@@ -3,7 +3,7 @@ import {Button, Flex, Text} from "@chakra-ui/react";
 
 const NavBar = ({addCarHandler}) => {
     return (
-        <Flex bg={"black"} justify={"space-between"} position="fixed" top="0rem" minH={"4.5rem"} w={"100%"}
+        <Flex zIndex={2} bg={"black"} justify={"space-between"} position="fixed" top="0rem" minH={"4.5rem"} w={"100%"}
               align="center">
             <a href={"/"}>
                 <Text fontSize={"2xl"} color={"white"} ml={"2rem"}>

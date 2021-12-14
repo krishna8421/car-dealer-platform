@@ -10,13 +10,14 @@ import {
     FormControl,
     FormLabel,
     FormErrorMessage,
-    Input, Text,
+    Input, Text, Box,
 } from "@chakra-ui/react"
 import NavBar from "./components/NavBar";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {Formik, Form, Field} from 'formik';
 import * as Yup from 'yup';
+import CarBox from "./components/CarBox";
 
 function App() {
     const [data, setData] = useState([]);
@@ -49,7 +50,7 @@ function App() {
             }
         })
             .then((res) => {
-                if(res.data.status==="success"){
+                if (res.data.status === "success") {
                     onClose()
                     setError({
                         status: false,
@@ -97,7 +98,7 @@ function App() {
     });
 
     return (
-        <Flex h={"100vh"} w={"100%"} bg={"gray.100"}>
+        <Flex minH={"100vh"} w={"100%"} bg={"gray.100"}>
             <NavBar addCarHandler={addCarHandler}/>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay/>
@@ -184,7 +185,8 @@ function App() {
                                         Submit
                                     </Button>
                                     <Flex justify={"center"}>
-                                        <Text fontSize={"lg"} color={"red.500"}> {error.status  ? error.message : "" } </Text>
+                                        <Text fontSize={"lg"}
+                                              color={"red.500"}> {error.status ? error.message : ""} </Text>
                                     </Flex>
 
                                 </Form>
@@ -193,11 +195,24 @@ function App() {
                     </ModalBody>
                 </ModalContent>
             </Modal>
-            <Flex mt={"7rem"}>
+            <Box w="100%" my={"7rem"}>
+                <Flex justify="center" flexWrap="wrap" >
+                    {
+                        data.message===undefined ? "" :
+                        data.message.map((carData,index)=>{
+                            return (
+                                <CarBox key={index} carData={carData} deleteCar={()=>{
+                                    axios.delete(`http://localhost:8080/deleteCar/${carData._id}`).then(()=>{
+                                        fetchData().then()
+                                    })
 
-                {JSON.stringify(data.message)}
 
-            </Flex>
+                                }}  />
+                            )
+                        })
+                    }
+                </Flex>
+            </Box>
         </Flex>
     );
 }
